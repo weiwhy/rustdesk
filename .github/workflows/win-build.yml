@@ -1,4 +1,4 @@
-name: Flutter Nightly Build
+name: 编译Windows包
 
 on:
   # schedule:
