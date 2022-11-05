@@ -2,13 +2,6 @@ name: 编译Windows包
 
 on:
   workflow_dispatch:
-      inputs:
-        logLevel:
-          description: 'Log level'
-          required: true
-          default: 'warning'
-        tags:
-          description: 'Test scenario tags'
 
 env:
   LLVM_VERSION: "10.0"
