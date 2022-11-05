@@ -43,7 +43,7 @@ class _ConnectionPageState extends State<ConnectionPage>
 
   var svcStopped = false.obs;
   var svcStatusCode = 0.obs;
-  var svcIsUsingPublicServer = true.obs;
+  var svcIsUsingPublicServer = false.obs;
 
   bool isWindowMinisized = false;
 
@@ -318,7 +318,7 @@ class _ConnectionPageState extends State<ConnectionPage>
                             children: [
                               Flexible(
                                 child: Text(
-                                  translate(''),
+                                  translate('setup_server_tip'),
                                   style: TextStyle(
                                       decoration: TextDecoration.underline,
                                       fontSize: em),
