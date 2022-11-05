@@ -43,7 +43,7 @@ class _ConnectionPageState extends State<ConnectionPage>
 
   var svcStopped = false.obs;
   var svcStatusCode = 0.obs;
-  var svcIsUsingPublicServer = false.obs;
+  var svcIsUsingPublicServer = true.obs;
 
   bool isWindowMinisized = false;
 
@@ -340,7 +340,7 @@ class _ConnectionPageState extends State<ConnectionPage>
   void onUsePublicServerGuide() {
     const url = "https://rustdesk.com/blog/id-relay-set/";
     canLaunchUrlString(url).then((can) {
-      if (can) {
+      if (!can) {
         launchUrlString(url);
       }
     });
