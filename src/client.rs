@@ -426,7 +426,7 @@ impl Client {
         let rs_pk = get_rs_pk(if key.is_empty() {
             hbb_common::config::RS_PUB_KEY
         } else {
-            hbb_common::config::RS_PUB_KEY
+            key
         });
         let mut sign_pk = None;
         if !signed_id_pk.is_empty() && rs_pk.is_some() {
