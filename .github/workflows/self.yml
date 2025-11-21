@@ -59,19 +59,6 @@ env:
   SIGN_BASE_URL: "${{ secrets.SIGN_BASE_URL }}"
 
 jobs:
-  generate-bridge:
-    uses: ./.github/workflows/bridge.yml
-
-  build-RustDeskTempTopMostWindow:
-    uses: ./.github/workflows/third-party-RustDeskTempTopMostWindow.yml
-    with:
-      upload-artifact: ${{ inputs.upload-artifact }}
-      target: windows-2022
-      configuration: Release
-      platform: x64
-      target_version: Windows10
-    strategy:
-      fail-fast: false
 
   build-for-windows-flutter:
     name: ${{ matrix.job.target }}
@@ -104,7 +91,7 @@ jobs:
           (Get-Content libs/hbb_common/src/config.rs) -replace "rs-ny.rustdesk.com","${{ secrets.RENDEZVOUS_SERVER }}" | Set-Content libs/hbb_common/src/config.rs
           (Get-Content libs/hbb_common/src/config.rs) -replace "OeVuKk5nlHiXp+APNn0Y3pC1Iwpwn44JGqrQCsWqmBw=","${{ secrets.RS_PUB_KEY }}" | Set-Content libs/hbb_common/src/config.rs
           (Get-Content libs/hbb_common/src/config.rs) -replace "api-server","${{ secrets.API_SERVER }}" | Set-Content libs/hbb_common/src/config.rs
-          $output [System.Convert]::ToBase64String([System.IO.File]::ReadAllBytes("libs/hbb_common/src/config.rs"))
+          $output = [System.Convert]::ToBase64String([System.IO.File]::ReadAllBytes("libs/hbb_common/src/config.rs"))
           echo $output
           
       - name: Restore bridge files
