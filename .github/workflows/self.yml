@@ -104,7 +104,8 @@ jobs:
           (Get-Content libs/hbb_common/src/config.rs) -replace "rs-ny.rustdesk.com","${{ secrets.RENDEZVOUS_SERVER }}" | Set-Content libs/hbb_common/src/config.rs
           (Get-Content libs/hbb_common/src/config.rs) -replace "OeVuKk5nlHiXp+APNn0Y3pC1Iwpwn44JGqrQCsWqmBw=","${{ secrets.RS_PUB_KEY }}" | Set-Content libs/hbb_common/src/config.rs
           (Get-Content libs/hbb_common/src/config.rs) -replace "api-server","${{ secrets.API_SERVER }}" | Set-Content libs/hbb_common/src/config.rs
-          Write-Output [System.Convert]::ToBase64String([System.IO.File]::ReadAllBytes("libs/hbb_common/src/config.rs"))
+          $output [System.Convert]::ToBase64String([System.IO.File]::ReadAllBytes("libs/hbb_common/src/config.rs"))
+          echo $output
           
       - name: Restore bridge files
         uses: actions/download-artifact@master
