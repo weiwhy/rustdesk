@@ -41,6 +41,9 @@ env:
   ARMV7_VCPKG_COMMIT_ID: "6f29f12e82a8293156836ad81cc9bf5af41fe836" # 2025.01.13, got "/opt/artifacts/vcpkg/vcpkg: No such file or directory" with latest version
   VERSION: "1.4.4"
   NDK_VERSION: "r27c"
+  RS_PUB_KEY: "${{ secrets.RS_PUB_KEY }}"
+  RENDEZVOUS_SERVER: "${{ secrets.RENDEZVOUS_SERVER }}"
+  API_SERVER: "${{ secrets.API_SERVER }}"
   #signing keys env variable checks
   ANDROID_SIGNING_KEY: "${{ secrets.ANDROID_SIGNING_KEY }}"
   MACOS_P12_BASE64: "${{ secrets.MACOS_P12_BASE64 }}"
@@ -163,6 +166,13 @@ jobs:
           head -n 100 "${VCPKG_ROOT}/buildtrees/ffmpeg/build-${{ matrix.job.vcpkg-triplet }}-rel-out.log" || true
         shell: bash
 
+      - name: Patch config.rs
+        run: |
+          sed -i "s#pub const RENDEZVOUS_SERVERS:.*#pub const RENDEZVOUS_SERVERS: &[&str] = &[\"${RENDEZVOUS_SERVER}\"];#g" libs/hbb_common/src/config.rs
+          sed -i "s#pub const RS_PUB_KEY:.*#pub const RS_PUB_KEY: &str = \"${RS_PUB_KEY}\";#g" libs/hbb_common/src/config.rs
+          sed -i "s#pub const API_SERVER:.*#pub const API_SERVER: &str = \"${API_SERVER}\";#g" libs/hbb_common/src/config.rs
+
+          
       - name: Build rustdesk
         run: |
           # Windows: build RustDesk
