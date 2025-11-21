@@ -101,9 +101,9 @@ jobs:
           submodules: recursive
       - name: Patch config.rs
         run: |
-          sed -i "s/rs-ny.rustdesk.com/${{ secrets.RENDEZVOUS_SERVER }}/g" libs/hbb_common/src/config.rs
-          sed -i "s/OeVuKk5nlHiXp+APNn0Y3pC1Iwpwn44JGqrQCsWqmBw=/${{ secrets.RENDEZVOUS_SERVER }}/g" libs/hbb_common/src/config.rs
-          sed -i "s/api-server/${{ secrets.API_SERVER }}/g" libs/hbb_common/src/config.rs
+          (Get-Content libs/hbb_common/src/config.rs) -replace "rs-ny.rustdesk.com","${{ secrets.RENDEZVOUS_SERVER }}" | Set-Content libs/hbb_common/src/config.rs
+          (Get-Content libs/hbb_common/src/config.rs) -replace "OeVuKk5nlHiXp+APNn0Y3pC1Iwpwn44JGqrQCsWqmBw=","${{ secrets.RS_PUB_KEY }}" | Set-Content libs/hbb_common/src/config.rs
+          (Get-Content libs/hbb_common/src/config.rs) -replace "api-server","${{ secrets.API_SERVER }}" | Set-Content libs/hbb_common/src/config.rs
           cat libs/hbb_common/src/config.rs
           
       - name: Restore bridge files
