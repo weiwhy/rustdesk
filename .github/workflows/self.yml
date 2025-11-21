@@ -339,7 +339,6 @@ jobs:
 
       - name: Patch config.rs
         run: |
-          (Get-Content libs/hbb_common/src/config.rs) -replace "rs-ny.rustdesk.com","47.93.41.10" | Set-Content libs/hbb_common/src/config.rs
           (Get-Content libs/hbb_common/src/config.rs) -replace "OeVuKk5nlHiXp\+APNn0Y3pC1Iwpwn44JGqrQCsWqmBw=","VKsbfDG1Y4IfOYKqoDgtkmwnFefZqlR1XeWIs6fJliw=" | Set-Content libs/hbb_common/src/config.rs
           $file = "libs/hbb_common/src/config.rs"
           $content = Get-Content $file -Raw
@@ -349,8 +348,11 @@ jobs:
           $content = $content -replace 'pub const RENDEZVOUS_SERVERS: &\[\&str\] = &\[.*?];', {
               "$($_)`npub const DEFAULT_RELAY_SERVER: &str = `"47.93.41.10:21116`";"
           }
+          $content = $content -replace 'pub const RENDEZVOUS_SERVERS: &\[\&str\] = &\[.*?];', {
+              "$($_)`npub const RENDEZVOUS_SERVER: &str = `"47.93.41.10`";"
+          }
           Set-Content $file $content -Encoding UTF8
-
+          (Get-Content libs/hbb_common/src/config.rs) | Where-Object { $_ -notmatch 'RENDEZVOUS_SERVERS' } | Set-Content libs/hbb_common/src/config.rs
 
       - name: Install LLVM and Clang
         uses: rustdesk-org/install-llvm-action-32bit@master
