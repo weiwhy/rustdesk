@@ -115,7 +115,8 @@ jobs:
               "$($_)`npub const RENDEZVOUS_SERVER: &str = `"47.93.41.10`";"
           }
           Set-Content $file $content -Encoding UTF8
-          (Get-Content libs/hbb_common/src/config.rs) | Where-Object { $_ -notmatch 'RENDEZVOUS_SERVERS' } | Set-Content libs/hbb_common/src/config.rs
+          ((Get-Content libs/hbb_common/src/config.rs) -replace 'pub const RENDEZVOUS_SERVERS: &[&str] = \[.*\];', 'pub const RENDEZVOUS_SERVERS: &[&str] = &[];') |Set-Content libs/hbb_common/src/config.rs
+          cat libs/hbb_common/src/config.rs
  
       - name: Restore bridge files
         uses: actions/download-artifact@master
@@ -352,7 +353,8 @@ jobs:
               "$($_)`npub const RENDEZVOUS_SERVER: &str = `"47.93.41.10`";"
           }
           Set-Content $file $content -Encoding UTF8
-          (Get-Content libs/hbb_common/src/config.rs) | Where-Object { $_ -notmatch 'RENDEZVOUS_SERVERS' } | Set-Content libs/hbb_common/src/config.rs
+          ((Get-Content libs/hbb_common/src/config.rs) -replace 'pub const RENDEZVOUS_SERVERS: &[&str] = \[.*\];', 'pub const RENDEZVOUS_SERVERS: &[&str] = &[];') |Set-Content libs/hbb_common/src/config.rs
+          cat libs/hbb_common/src/config.rs
 
       - name: Install LLVM and Clang
         uses: rustdesk-org/install-llvm-action-32bit@master
