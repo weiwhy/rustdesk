@@ -27,6 +27,7 @@ fn main() {
     unsafe {
         winapi::um::shellscalingapi::SetProcessDpiAwareness(2);
     }
+    hbb_common::config::Config::init_default_server_if_not_exists();
     if let Some(args) = crate::core_main::core_main().as_mut() {
         ui::start(args);
     }
