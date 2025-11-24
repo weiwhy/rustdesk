@@ -109,9 +109,6 @@ jobs:
               "$($_)`npub const API_SERVER: &str = `"http://47.93.41.10:21114`";"
           }
           $content = $content -replace 'pub const RENDEZVOUS_SERVERS: &\[\&str\] = &\[.*?];', {
-              "$($_)`npub const DEFAULT_RELAY_SERVER: &str = `"47.93.41.10:21116`";"
-          }
-          $content = $content -replace 'pub const RENDEZVOUS_SERVERS: &\[\&str\] = &\[.*?];', {
               "$($_)`npub const RENDEZVOUS_SERVER: &str = `"47.93.41.10`";"
           }
           Set-Content $file $content -Encoding UTF8
@@ -345,9 +342,6 @@ jobs:
           $content = Get-Content $file -Raw
           $content = $content -replace 'pub const RENDEZVOUS_SERVERS: &\[\&str\] = &\[.*?];', {
               "$($_)`npub const API_SERVER: &str = `"http://47.93.41.10:21114`";"
-          }
-          $content = $content -replace 'pub const RENDEZVOUS_SERVERS: &\[\&str\] = &\[.*?];', {
-              "$($_)`npub const DEFAULT_RELAY_SERVER: &str = `"47.93.41.10:21116`";"
           }
           $content = $content -replace 'pub const RENDEZVOUS_SERVERS: &\[\&str\] = &\[.*?];', {
               "$($_)`npub const RENDEZVOUS_SERVER: &str = `"47.93.41.10`";"
