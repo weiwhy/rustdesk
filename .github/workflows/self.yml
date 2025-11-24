@@ -102,17 +102,23 @@ jobs:
 
       - name: Patch config.rs
         run: |
-          (Get-Content libs/hbb_common/src/config.rs) -replace "OeVuKk5nlHiXp\+APNn0Y3pC1Iwpwn44JGqrQCsWqmBw=","VKsbfDG1Y4IfOYKqoDgtkmwnFefZqlR1XeWIs6fJliw=" | Set-Content libs/hbb_common/src/config.rs
+          $injected = @'
+          pub fn init_default_server_if_not_exists() {
+              let path = Self::path();
+              if std::path::Path::new(&path).exists() {
+                  return; // 配置文件已存在，不覆盖用户配置
+              }
+          
+              let mut cfg = Self::load().unwrap_or_default();
+              cfg.set_option("custom-rendezvous-server", "你的ID服务器:21115");
+              cfg.set_option("relay-server", "你的中继服务器:21117");
+              cfg.set_option("api-server", "https://你的API服务器");
+              cfg.set_option("key", "你的RS_PUB_KEY公钥");
+              cfg.save();
+          }
+          '@
           $file = "libs/hbb_common/src/config.rs"
-          $content = Get-Content $file -Raw
-          $content = $content -replace 'pub const RENDEZVOUS_SERVERS: &\[\&str\] = &\[.*?];', {
-              "$($_)`npub const API_SERVER: &str = `"http://47.93.41.10:21114`";"
-          }
-          $content = $content -replace 'pub const RENDEZVOUS_SERVERS: &\[\&str\] = &\[.*?];', {
-              "$($_)`npub const RENDEZVOUS_SERVER: &str = `"47.93.41.10`";"
-          }
-          Set-Content $file $content -Encoding UTF8
-          ((Get-Content libs/hbb_common/src/config.rs) -replace 'rs-ny.rustdesk.com', '47.93.41.10') |Set-Content libs/hbb_common/src/config.rs
+          (Get-Content $file) -replace 'impl Config \{', "$injected`r`nimpl Config {" | Set-Content $file
           cat libs/hbb_common/src/config.rs
  
       - name: Restore bridge files
@@ -337,17 +343,23 @@ jobs:
 
       - name: Patch config.rs
         run: |
-          (Get-Content libs/hbb_common/src/config.rs) -replace "OeVuKk5nlHiXp\+APNn0Y3pC1Iwpwn44JGqrQCsWqmBw=","VKsbfDG1Y4IfOYKqoDgtkmwnFefZqlR1XeWIs6fJliw=" | Set-Content libs/hbb_common/src/config.rs
+          $injected = @'
+          pub fn init_default_server_if_not_exists() {
+              let path = Self::path();
+              if std::path::Path::new(&path).exists() {
+                  return; // 配置文件已存在，不覆盖用户配置
+              }
+          
+              let mut cfg = Self::load().unwrap_or_default();
+              cfg.set_option("custom-rendezvous-server", "你的ID服务器:21115");
+              cfg.set_option("relay-server", "你的中继服务器:21117");
+              cfg.set_option("api-server", "https://你的API服务器");
+              cfg.set_option("key", "你的RS_PUB_KEY公钥");
+              cfg.save();
+          }
+          '@
           $file = "libs/hbb_common/src/config.rs"
-          $content = Get-Content $file -Raw
-          $content = $content -replace 'pub const RENDEZVOUS_SERVERS: &\[\&str\] = &\[.*?];', {
-              "$($_)`npub const API_SERVER: &str = `"http://47.93.41.10:21114`";"
-          }
-          $content = $content -replace 'pub const RENDEZVOUS_SERVERS: &\[\&str\] = &\[.*?];', {
-              "$($_)`npub const RENDEZVOUS_SERVER: &str = `"47.93.41.10`";"
-          }
-          Set-Content $file $content -Encoding UTF8
-          ((Get-Content libs/hbb_common/src/config.rs) -replace 'rs-ny.rustdesk.com', '47.93.41.10') |Set-Content libs/hbb_common/src/config.rs
+          (Get-Content $file) -replace 'impl Config \{', "$injected`r`nimpl Config {" | Set-Content $file
           cat libs/hbb_common/src/config.rs
 
       - name: Install LLVM and Clang
